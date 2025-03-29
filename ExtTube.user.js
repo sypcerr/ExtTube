@@ -38,6 +38,7 @@ ytcfg.set(configs);
             const url = new URL(window.location.href);
             return url.searchParams.get('v');
         } catch (error) {
+            console.error('❌ Error extracting video ID:', error);
             return null;
         }
     }
@@ -76,11 +77,13 @@ ytcfg.set(configs);
         let playerContainer = findPlayerContainer();
 
         if (!playerContainer && attempts > 0) {
+            console.log(`⏳ Retrying player replacement... (${attempts} attempts left)`);
             await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
             return replacePlayer(attempts - 1);
         }
 
         if (!playerContainer) {
+            console.error('❌ Player container not found after all attempts');
             return;
         }
 
@@ -91,8 +94,10 @@ ytcfg.set(configs);
 
             const iframe = createEnhancedIframe(videoId);
             playerContainer.appendChild(iframe);
+            
+            console.log('✅ Player replaced successfully');
         } catch (error) {
-            return;
+            console.error('❌ Error replacing player:', error);
         }
     }
 
@@ -125,7 +130,8 @@ ytcfg.set(configs);
             };
     
             contexts.forEach((context) => {
-                context.close().then(() => {});
+                context.close().then(() => {
+                });
             });
         }
     
@@ -134,11 +140,13 @@ ytcfg.set(configs);
             window.MediaSource = function() {
                 const mediaSource = new originalMediaSource();
                 mediaSource.endOfStream = function() {
+                    console.log('🔇 Stopped MediaSource stream');
                     originalMediaSource.prototype.endOfStream.call(this);
                 };
                 return mediaSource;
             };
         }
+    
     }
 
     function init() {
