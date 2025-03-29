@@ -9,8 +9,8 @@
 // @run-at       document-idle
 // @updateURL    https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
 // @downloadURL  https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
-// @noframes
 // @license      MIT
+// @noframes
 // ==/UserScript==
 
 (function() {
@@ -33,13 +33,13 @@
         let watchButton = document.createElement('button');
         watchButton.id = 'exttube-invidious-button';
         watchButton.innerText = 'Watch on Invidious';
-        watchButton.style.marginRight = '0'; // No space between buttons
-        watchButton.style.padding = '6px 12px';
+        watchButton.style.marginRight = '4px'; // Minimal padding between buttons
+        watchButton.style.padding = '4px 8px'; // Smaller button size
         watchButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         watchButton.style.color = '#0f0f0f'; // Default for light mode
         watchButton.style.border = 'none';
         watchButton.style.cursor = 'pointer';
-        watchButton.style.fontSize = '14px';
+        watchButton.style.fontSize = '12px'; // Smaller font size
         watchButton.style.borderRadius = '20px 0 0 20px'; // Rounded corners on the left
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
@@ -49,12 +49,12 @@
         let playerButton = document.createElement('button');
         playerButton.id = 'exttube-invidious-player-button';
         playerButton.innerText = 'Use Invidious Player';
-        playerButton.style.padding = '6px 12px';
+        playerButton.style.padding = '4px 8px'; // Smaller button size
         playerButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         playerButton.style.color = '#0f0f0f'; // Default for light mode
         playerButton.style.border = 'none';
         playerButton.style.cursor = 'pointer';
-        playerButton.style.fontSize = '14px';
+        playerButton.style.fontSize = '12px'; // Smaller font size
         playerButton.style.borderRadius = '0 20px 20px 0'; // Rounded corners on the right
         playerButton.style.display = 'inline-flex';
         playerButton.style.alignItems = 'center';
