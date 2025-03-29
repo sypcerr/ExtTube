@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2.2
+// @version      1.2
 // @description  Adds Invidious buttons to YouTube videos while keeping the default player and adds a "Use Invidious Player" option.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
@@ -34,32 +34,33 @@
         watchButton.id = 'exttube-invidious-button';
         watchButton.innerText = 'Watch on Invidious';
         watchButton.style.marginRight = '2px'; // Reduced padding between buttons
-        watchButton.style.padding = '3px 6px'; // Smaller button size
+        watchButton.style.padding = '6px 12px'; // Adjust size to match YouTube buttons
         watchButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         watchButton.style.color = '#0f0f0f'; // Default for light mode
         watchButton.style.border = 'none';
         watchButton.style.cursor = 'pointer';
-        watchButton.style.fontSize = '11px'; // Smaller font size
+        watchButton.style.fontSize = '14px'; // Same font size as YouTube buttons
         watchButton.style.borderRadius = '20px 0 0 20px'; // Rounded corners on the left
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
         watchButton.style.justifyContent = 'center';
-        watchButton.style.marginLeft = '10px'; // Padding to the left for spacing
+        watchButton.style.width = 'auto'; // Same width as YouTube buttons
 
         // "Use Invidious Player" button
         let playerButton = document.createElement('button');
         playerButton.id = 'exttube-invidious-player-button';
         playerButton.innerText = 'Use Invidious Player';
-        playerButton.style.padding = '3px 6px'; // Smaller button size
+        playerButton.style.padding = '6px 12px'; // Adjust size to match YouTube buttons
         playerButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         playerButton.style.color = '#0f0f0f'; // Default for light mode
         playerButton.style.border = 'none';
         playerButton.style.cursor = 'pointer';
-        playerButton.style.fontSize = '11px'; // Smaller font size
+        playerButton.style.fontSize = '14px'; // Same font size as YouTube buttons
         playerButton.style.borderRadius = '0 20px 20px 0'; // Rounded corners on the right
         playerButton.style.display = 'inline-flex';
         playerButton.style.alignItems = 'center';
         playerButton.style.justifyContent = 'center';
+        playerButton.style.width = 'auto'; // Same width as YouTube buttons
 
         // Change the button style for dark mode
         if (isDarkMode()) {
@@ -80,11 +81,9 @@
         playerButton.addEventListener('click', function() {
             let videoId = new URL(window.location.href).searchParams.get('v');
             if (videoId) {
-                let currentUrl = window.location.href;
-                if (currentUrl.includes('youtube.com/watch?v=')) {
-                    let newUrl = currentUrl.replace('youtube.com/watch?v=', 'invidious.nerdvpn.de/watch?v=');
-                    window.location.href = newUrl; // Reload with Invidious player
-                }
+                // Change the player to Invidious on the current page
+                let newUrl = window.location.href.replace('youtube.com/watch?v=', 'invidious.nerdvpn.de/watch?v=');
+                window.location.href = newUrl; // Navigate to Invidious with its player on the same page
             }
         });
 
