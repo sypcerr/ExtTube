@@ -20,6 +20,10 @@ ExtTube is a Tampermonkey userscript that adds a **Watch on Invidious** button t
 - It adds a **Watch on Invidious** button next to the like/dislike buttons.
 - Clicking the button opens the current video in Invidious in a new tab.
 
+## Updates
+Updated to Version 1.1
+Now the buttons appearence changes based on your YouTube Settings (Dark/Light Mode)
+
 ## License
 This project is open-source under the MIT License.
 
