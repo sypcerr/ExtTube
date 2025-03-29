@@ -15,9 +15,15 @@
 (function() {
     'use strict';
 
+    // Function to detect YouTube's theme (dark or light)
+    function getYoutubeTheme() {
+        return document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+    }
+
+    // Function to add the Invidious button
     function addInvidiousButton() {
         let existingButton = document.querySelector('#exttube-invidious-button');
-        if (existingButton) return; // Button existiert bereits
+        if (existingButton) return; // Button already exists
 
         let container = document.querySelector('#top-level-buttons-computed');
         if (!container) return;
@@ -27,8 +33,8 @@
         button.innerText = 'Watch on Invidious';
         button.style.marginLeft = '10px';
         button.style.padding = '6px 12px';
-        button.style.backgroundColor = '#f1f1f1';
-        button.style.color = '#0f0f0f';
+        button.style.backgroundColor = '#f1f1f1'; // Default for light mode
+        button.style.color = '#0f0f0f'; // Default for light mode
         button.style.border = 'none';
         button.style.cursor = 'pointer';
         button.style.fontSize = '14px';
@@ -36,6 +42,12 @@
         button.style.display = 'flex';
         button.style.alignItems = 'center';
         button.style.justifyContent = 'center';
+
+        // Change the button style for dark mode
+        if (getYoutubeTheme() === 'dark') {
+            button.style.backgroundColor = '#3c3c3c'; // Dark mode background
+            button.style.color = '#ffffff'; // Dark mode text color
+        }
 
         button.addEventListener('click', function() {
             let videoId = new URL(window.location.href).searchParams.get('v');
@@ -47,7 +59,6 @@
         container.appendChild(button);
     }
 
-    // Füge den Button nach einem kurzen Timeout ein, um sicherzustellen, dass die UI geladen ist
+    // Add the button after a short timeout to ensure the UI is loaded
     setInterval(addInvidiousButton, 2000);
 })();
-
