@@ -32,20 +32,20 @@ ytcfg.set(configs);
             border: 'none'
         },
         BUTTON_STYLES: {
-            background: 'linear-gradient(to bottom, #f8f8f8, #f1f1f1)',
-            color: '#333',
-            borderRadius: '3px',
-            padding: '8px 12px',
+            display: 'inline-block',
+            padding: '10px 16px',
+            margin: '10px 0 0 10px',
             fontSize: '14px',
             fontWeight: 'bold',
-            margin: '10px',
+            borderRadius: '4px',
             cursor: 'pointer',
-            border: '1px solid #ccc',
-            transition: 'all 0.3s ease'
-        },
-        BUTTON_HOVER_STYLES: {
-            background: '#e5e5e5',
-            borderColor: '#888'
+            backgroundColor: '#ff0000',  // YouTube red
+            color: '#fff',
+            textAlign: 'center',
+            textDecoration: 'none',
+            boxSizing: 'border-box',
+            transition: 'background-color 0.2s ease',
+            border: 'none'
         }
     };
 
@@ -85,28 +85,6 @@ ytcfg.set(configs);
         return iframe;
     }
 
-    function createInvidiousButton(videoId) {
-        const button = document.createElement('button');
-        button.textContent = 'Watch on Invidious';
-        button.style.cssText = Object.entries(CONFIG.BUTTON_STYLES).map(([key, value]) => `${key}: ${value}`).join('; ');
-
-        // Hover effect
-        button.addEventListener('mouseenter', () => {
-            Object.assign(button.style, CONFIG.BUTTON_HOVER_STYLES);
-        });
-        button.addEventListener('mouseleave', () => {
-            Object.assign(button.style, CONFIG.BUTTON_STYLES);
-        });
-
-        // On click, redirect to Invidious page
-        button.addEventListener('click', () => {
-            const invidiousUrl = `https://invidious.snopyta.org/watch?v=${videoId}`;
-            window.open(invidiousUrl, '_blank');
-        });
-
-        return button;
-    }
-
     async function replacePlayer(attempts = CONFIG.RETRY_ATTEMPTS) {
         const videoId = getVideoId();
         if (!videoId) return;
@@ -134,13 +112,35 @@ ytcfg.set(configs);
             playerContainer.appendChild(iframe);
             
             console.log('✅ Player replaced successfully');
-
-            // Add Invidious button after the iframe
-            const invidiousButton = createInvidiousButton(videoId);
-            playerContainer.appendChild(invidiousButton);
-
         } catch (error) {
             console.error('❌ Error replacing player:', error);
+        }
+    }
+
+    function createInvidiousButton(videoId) {
+        const button = document.createElement('button');
+        button.textContent = 'Watch on Invidious';
+        button.style = Object.assign({}, CONFIG.BUTTON_STYLES);
+        
+        // On button click, redirect to the Invidious playback page
+        button.addEventListener('click', () => {
+            const invidiousUrl = `https://invidious.example.com/watch?v=${videoId}`;  // Replace 'example.com' with the Invidious instance URL
+            window.location.href = invidiousUrl;
+        });
+
+        return button;
+    }
+
+    function addInvidiousButton() {
+        const videoId = getVideoId();
+        if (!videoId) return;
+
+        const header = document.querySelector('.ytp-right-controls');
+        if (header) {
+            const invidiousButton = createInvidiousButton(videoId);
+            header.appendChild(invidiousButton);
+        } else {
+            console.error('❌ Header not found for Invidious button');
         }
     }
 
@@ -198,6 +198,7 @@ ytcfg.set(configs);
     function init() {
         console.log('🚀 YouTube player bypass script initialized');
         stopMediaElements();
+        addInvidiousButton();
         window.addEventListener('yt-navigate-finish', () => replacePlayer());
     }
 
