@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2.2.2
+// @version      1.2.2.3
 // @description  Adds Invidious buttons to YouTube videos while keeping the default player and adds a "Use Invidious Player" option.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
@@ -40,7 +40,7 @@
         watchButton.style.border = 'none';
         watchButton.style.cursor = 'pointer';
         watchButton.style.fontSize = '13px'; // Adjust font size for a smaller button
-        watchButton.style.borderRadius = '3px'; // Rounded corners
+        watchButton.style.borderRadius = '20px 20px 20px 20px'; // Rounded corners
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
         watchButton.style.justifyContent = 'center';
@@ -56,7 +56,7 @@
         playerButton.style.border = 'none';
         playerButton.style.cursor = 'pointer';
         playerButton.style.fontSize = '13px'; // Adjust font size for a smaller button
-        playerButton.style.borderRadius = '3px'; // Rounded corners
+        playerButton.style.borderRadius = '20px 20px 20px 20px'; // Rounded corners
         playerButton.style.display = 'inline-flex';
         playerButton.style.alignItems = 'center';
         playerButton.style.justifyContent = 'center';
@@ -81,18 +81,8 @@
         playerButton.addEventListener('click', function() {
             let videoId = new URL(window.location.href).searchParams.get('v');
             if (videoId) {
-                // Replacing YouTube player with Invidious player using iframe
-                let videoPlayer = document.querySelector('.html5-video-player');
-                if (videoPlayer) {
-                    videoPlayer.innerHTML = `
-                        <iframe 
-                            src="https://invidious.nerdvpn.de/embed/${videoId}?autoplay=1" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen 
-                            style="width: 100%; height: 100%;"
-                        ></iframe>`;
-                }
+                // Reload the page and replace the player with Invidious player
+                window.location.href = `https://invidious.nerdvpn.de/embed/${videoId}`;
             }
         });
 
