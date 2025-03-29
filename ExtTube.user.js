@@ -34,33 +34,33 @@
         watchButton.id = 'exttube-invidious-button';
         watchButton.innerText = 'Watch on Invidious';
         watchButton.style.marginRight = '2px'; // Reduced padding between buttons
-        watchButton.style.padding = '4px 8px'; // Slightly smaller button size
+        watchButton.style.padding = '6px 12px'; // Slightly smaller button size
         watchButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         watchButton.style.color = '#0f0f0f'; // Default for light mode
         watchButton.style.border = 'none';
         watchButton.style.cursor = 'pointer';
-        watchButton.style.fontSize = '12px'; // Adjust font size for a smaller button
-        watchButton.style.borderRadius = '20px 0 0 20px'; // Rounded corners on the left
+        watchButton.style.fontSize = '13px'; // Adjust font size for a smaller button
+        watchButton.style.borderRadius = '3px'; // Rounded corners
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
         watchButton.style.justifyContent = 'center';
-        watchButton.style.width = 'auto'; // Same width as YouTube buttons
+        watchButton.style.transition = 'background-color 0.3s'; // Smooth transition for hover effect
 
         // "Use Invidious Player" button
         let playerButton = document.createElement('button');
         playerButton.id = 'exttube-invidious-player-button';
         playerButton.innerText = 'Use Invidious Player';
-        playerButton.style.padding = '4px 8px'; // Slightly smaller button size
+        playerButton.style.padding = '6px 12px'; // Slightly smaller button size
         playerButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         playerButton.style.color = '#0f0f0f'; // Default for light mode
         playerButton.style.border = 'none';
         playerButton.style.cursor = 'pointer';
-        playerButton.style.fontSize = '12px'; // Adjust font size for a smaller button
-        playerButton.style.borderRadius = '0 20px 20px 0'; // Rounded corners on the right
+        playerButton.style.fontSize = '13px'; // Adjust font size for a smaller button
+        playerButton.style.borderRadius = '3px'; // Rounded corners
         playerButton.style.display = 'inline-flex';
         playerButton.style.alignItems = 'center';
         playerButton.style.justifyContent = 'center';
-        playerButton.style.width = 'auto'; // Same width as YouTube buttons
+        playerButton.style.transition = 'background-color 0.3s'; // Smooth transition for hover effect
 
         // Change the button style for dark mode
         if (isDarkMode()) {
@@ -81,7 +81,7 @@
         playerButton.addEventListener('click', function() {
             let videoId = new URL(window.location.href).searchParams.get('v');
             if (videoId) {
-                // Replace the YouTube player with Invidious player
+                // Replacing YouTube player with Invidious player using iframe
                 let videoPlayer = document.querySelector('.html5-video-player');
                 if (videoPlayer) {
                     videoPlayer.innerHTML = `<iframe src="https://invidious.nerdvpn.de/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
@@ -89,7 +89,22 @@
             }
         });
 
-        // Append the buttons to the container, keeping them in their place
+        // Add hover effect for buttons to match YouTube style
+        watchButton.addEventListener('mouseover', function() {
+            watchButton.style.backgroundColor = isDarkMode() ? '#484848' : '#e1e1e1';
+        });
+        watchButton.addEventListener('mouseout', function() {
+            watchButton.style.backgroundColor = isDarkMode() ? '#3c3c3c' : '#f1f1f1';
+        });
+
+        playerButton.addEventListener('mouseover', function() {
+            playerButton.style.backgroundColor = isDarkMode() ? '#484848' : '#e1e1e1';
+        });
+        playerButton.addEventListener('mouseout', function() {
+            playerButton.style.backgroundColor = isDarkMode() ? '#3c3c3c' : '#f1f1f1';
+        });
+
+        // Append the buttons to the container
         container.appendChild(watchButton);
         container.appendChild(playerButton);
     }
