@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Adds an Invidious button to YouTube videos while keeping the default player.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
@@ -15,9 +15,9 @@
 (function() {
     'use strict';
 
-    // Function to detect YouTube's theme (dark or light)
-    function getYoutubeTheme() {
-        return document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+    // Function to detect if the user prefers dark mode using matchMedia
+    function isDarkMode() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
     // Function to add the Invidious button
@@ -44,7 +44,7 @@
         button.style.justifyContent = 'center';
 
         // Change the button style for dark mode
-        if (getYoutubeTheme() === 'dark') {
+        if (isDarkMode()) {
             button.style.backgroundColor = '#3c3c3c'; // Dark mode background
             button.style.color = '#ffffff'; // Dark mode text color
         }
