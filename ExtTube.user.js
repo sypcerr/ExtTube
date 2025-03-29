@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      1.2
 // @description  Adds Invidious buttons to YouTube videos while keeping the default player and adds a "Use Invidious Player" option.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
@@ -44,6 +44,7 @@
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
         watchButton.style.justifyContent = 'center';
+        watchButton.style.marginLeft = '10px'; // Padding to the left for spacing
 
         // "Use Invidious Player" button
         let playerButton = document.createElement('button');
@@ -87,14 +88,9 @@
             }
         });
 
-        // Append the buttons to the container between like and subscribe buttons
-        let likeButton = document.querySelector('ytd-toggle-button-renderer.style-scope.ytd-video-primary-info-renderer');
-        let subscribeButton = document.querySelector('ytd-subscribe-button-renderer.style-scope.ytd-video-primary-info-renderer');
-
-        if (likeButton && subscribeButton) {
-            container.insertBefore(watchButton, subscribeButton); // Insert the watch button between like and subscribe
-            container.insertBefore(playerButton, subscribeButton); // Insert the player button next to it
-        }
+        // Append the buttons to the container, keeping them in their place
+        container.appendChild(watchButton);
+        container.appendChild(playerButton);
     }
 
     // Add the buttons after a short timeout to ensure the UI is loaded
