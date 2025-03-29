@@ -34,13 +34,13 @@
         watchButton.id = 'exttube-invidious-button';
         watchButton.innerText = 'Watch on Invidious';
         watchButton.style.marginRight = '2px'; // Reduced padding between buttons
-        watchButton.style.padding = '6px 12px'; // Slightly smaller button size
+        watchButton.style.padding = '6px 14px'; // Slightly smaller button size
         watchButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         watchButton.style.color = '#0f0f0f'; // Default for light mode
         watchButton.style.border = 'none';
         watchButton.style.cursor = 'pointer';
-        watchButton.style.fontSize = '13px'; // Adjust font size for a smaller button
-        watchButton.style.borderRadius = '20px 20px 20px 20px'; // Rounded corners
+        watchButton.style.fontSize = '14px'; // Adjust font size for a smaller button
+        watchButton.style.borderRadius = '20px'; // Rounded corners on the outside
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
         watchButton.style.justifyContent = 'center';
@@ -50,13 +50,13 @@
         let playerButton = document.createElement('button');
         playerButton.id = 'exttube-invidious-player-button';
         playerButton.innerText = 'Use Invidious Player';
-        playerButton.style.padding = '6px 12px'; // Slightly smaller button size
+        playerButton.style.padding = '6px 14px'; // Slightly smaller button size
         playerButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         playerButton.style.color = '#0f0f0f'; // Default for light mode
         playerButton.style.border = 'none';
         playerButton.style.cursor = 'pointer';
-        playerButton.style.fontSize = '13px'; // Adjust font size for a smaller button
-        playerButton.style.borderRadius = '20px 20px 20px 20px'; // Rounded corners
+        playerButton.style.fontSize = '14px'; // Adjust font size for a smaller button
+        playerButton.style.borderRadius = '20px'; // Rounded corners on the outside
         playerButton.style.display = 'inline-flex';
         playerButton.style.alignItems = 'center';
         playerButton.style.justifyContent = 'center';
@@ -82,17 +82,18 @@
         playerButton.addEventListener('click', function() {
             let videoId = new URL(window.location.href).searchParams.get('v');
             if (videoId) {
-                // Replace YouTube player with Invidious player without reloading
-                let videoContainer = document.querySelector('.html5-video-player');
-                if (videoContainer) {
-                    let invidiousIframe = document.createElement('iframe');
-                    invidiousIframe.src = `https://invidious.nerdvpn.de/embed/${videoId}`;
-                    invidiousIframe.style.width = '100%';
-                    invidiousIframe.style.height = '100%';
-                    invidiousIframe.style.border = 'none';
-                    invidiousIframe.style.borderRadius = '8px'; // Make the iframe player have rounded corners
-                    videoContainer.innerHTML = ''; // Clear current YouTube player
-                    videoContainer.appendChild(invidiousIframe); // Embed Invidious player
+                // Replace the YouTube player with the Invidious player
+                let iframe = document.createElement('iframe');
+                iframe.src = `https://invidious.nerdvpn.de/embed/${videoId}`; // Embed Invidious player
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+
+                // Replace the YouTube player with the Invidious iframe
+                let playerContainer = document.querySelector('.html5-video-player');
+                if (playerContainer) {
+                    playerContainer.innerHTML = ''; // Clear the current YouTube player
+                    playerContainer.appendChild(iframe); // Embed the Invidious player
                 }
             }
         });
