@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2.2.1
+// @version      1.2.2.2
 // @description  Adds Invidious buttons to YouTube videos while keeping the default player and adds a "Use Invidious Player" option.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
@@ -84,7 +84,14 @@
                 // Replacing YouTube player with Invidious player using iframe
                 let videoPlayer = document.querySelector('.html5-video-player');
                 if (videoPlayer) {
-                    videoPlayer.innerHTML = `<iframe src="https://invidious.nerdvpn.de/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    videoPlayer.innerHTML = `
+                        <iframe 
+                            src="https://invidious.nerdvpn.de/embed/${videoId}?autoplay=1" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen 
+                            style="width: 100%; height: 100%;"
+                        ></iframe>`;
                 }
             }
         });
