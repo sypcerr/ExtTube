@@ -27,7 +27,11 @@
         if (existingButtons.length > 0) return; // Buttons already exist
 
         let container = document.querySelector('#top-level-buttons-computed');
-        if (!container) return;
+        if (!container) {
+            // Retry in case the container is not available immediately
+            setTimeout(addInvidiousButtons, 1000);
+            return;
+        }
 
         // "Watch on Invidious" button
         let watchButton = document.createElement('button');
@@ -129,9 +133,10 @@
         videoElements.forEach((video) => {
             video.pause();
             video.currentTime = 0;
+            video.remove(); // Remove video element from the page
         });
 
-        // Close any Web Audio API contexts that might be open
+        // Stop the Web Audio API if it's being used by YouTube
         if (window.AudioContext || window.webkitAudioContext) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             const originalAudioContext = AudioContext.prototype;
