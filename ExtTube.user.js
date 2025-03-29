@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.2.2
 // @description  Adds Invidious buttons to YouTube videos while keeping the default player and adds a "Use Invidious Player" option.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
