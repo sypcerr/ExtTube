@@ -4,7 +4,7 @@
 // @version      1.2.5
 // @description  Replaces YouTube player with Invidious player and adds a "Watch on Invidious" button.
 // @author       sypcerr
-// @match        https://*.youtube.com/watch/*
+// @match        https://*.youtube.com/*
 // @icon         https://cdn-icons-png.flaticon.com/256/1384/1384060.png
 // @run-at       document-idle
 // @updateURL    https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
