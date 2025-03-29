@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0
+// @version      1.3.1
 // @description  Adds Invidious buttons to YouTube videos and replaces the YouTube player with the Invidious player.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
@@ -16,26 +16,28 @@
 (function() {
     'use strict';
 
-    // Function to detect if the user prefers dark mode
+    // Function to check if dark mode is enabled
     function isDarkMode() {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    // Function to add the Invidious buttons
+    // Function to add Invidious buttons
     function addInvidiousButtons() {
-        // Check if buttons already exist
-        if (document.getElementById('exttube-invidious-button') && document.getElementById('exttube-invidious-player-button')) {
+        const existingButton = document.getElementById('exttube-invidious-button');
+        const existingPlayerButton = document.getElementById('exttube-invidious-player-button');
+        
+        // Ensure buttons are not duplicated
+        if (existingButton && existingPlayerButton) {
             return;
         }
 
-        // Wait for the video container to be available
         const videoContainer = document.querySelector('.html5-video-player');
         if (!videoContainer) {
-            setTimeout(addInvidiousButtons, 1000);
+            setTimeout(addInvidiousButtons, 1000); // Retry if video player isn't ready yet
             return;
         }
 
-        // Create a container for the buttons
+        // Create container for the buttons
         const buttonContainer = document.createElement('div');
         buttonContainer.style.display = 'flex';
         buttonContainer.style.alignItems = 'center';
@@ -69,7 +71,7 @@
         buttonContainer.appendChild(watchButton);
         buttonContainer.appendChild(playerButton);
 
-        // Insert the button container above the video player
+        // Insert button container before the video player
         videoContainer.parentNode.insertBefore(buttonContainer, videoContainer);
     }
 
@@ -88,7 +90,7 @@
         button.style.alignItems = 'center';
         button.style.justifyContent = 'center';
 
-        // Dark mode styling
+        // Apply dark mode styling
         if (isDarkMode()) {
             button.style.backgroundColor = '#3c3c3c';
             button.style.color = '#ffffff';
@@ -116,8 +118,8 @@
         }
     }
 
-    // Add the buttons after the page has loaded
+    // Wait for the page to load and add buttons
     window.addEventListener('load', function() {
-        setTimeout(addInvidiousButtons, 2000);
+        setTimeout(addInvidiousButtons, 2000); // Add buttons after a slight delay
     });
 })();
