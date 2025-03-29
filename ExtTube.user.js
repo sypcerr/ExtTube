@@ -7,8 +7,8 @@
 // @match        https://*.youtube.com/*
 // @icon         https://cdn-icons-png.flaticon.com/256/1384/1384060.png
 // @run-at       document-idle
-// @updateURL    https://github.com/
-// @downloadURL  -
+// @updateURL    https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
+// @downloadURL  https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
 // @noframes
 // ==/UserScript==
 
@@ -50,3 +50,4 @@
     // Füge den Button nach einem kurzen Timeout ein, um sicherzustellen, dass die UI geladen ist
     setInterval(addInvidiousButton, 2000);
 })();
+
