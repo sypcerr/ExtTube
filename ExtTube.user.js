@@ -30,22 +30,6 @@ ytcfg.set(configs);
             height: '100%',
             borderRadius: '15px',
             border: 'none'
-        },
-        BUTTON_STYLES: {
-            display: 'inline-block',
-            padding: '10px 16px',
-            margin: '10px 0 0 10px',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            backgroundColor: '#ff0000',  // YouTube red
-            color: '#fff',
-            textAlign: 'center',
-            textDecoration: 'none',
-            boxSizing: 'border-box',
-            transition: 'background-color 0.2s ease',
-            border: 'none'
         }
     };
 
@@ -54,7 +38,6 @@ ytcfg.set(configs);
             const url = new URL(window.location.href);
             return url.searchParams.get('v');
         } catch (error) {
-            console.error('❌ Error extracting video ID:', error);
             return null;
         }
     }
@@ -93,13 +76,11 @@ ytcfg.set(configs);
         let playerContainer = findPlayerContainer();
 
         if (!playerContainer && attempts > 0) {
-            console.log(`⏳ Retrying player replacement... (${attempts} attempts left)`);
             await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
             return replacePlayer(attempts - 1);
         }
 
         if (!playerContainer) {
-            console.error('❌ Player container not found after all attempts');
             return;
         }
 
@@ -110,37 +91,8 @@ ytcfg.set(configs);
 
             const iframe = createEnhancedIframe(videoId);
             playerContainer.appendChild(iframe);
-            
-            console.log('✅ Player replaced successfully');
         } catch (error) {
-            console.error('❌ Error replacing player:', error);
-        }
-    }
-
-    function createInvidiousButton(videoId) {
-        const button = document.createElement('button');
-        button.textContent = 'Watch on Invidious';
-        button.style = Object.assign({}, CONFIG.BUTTON_STYLES);
-        
-        // On button click, redirect to the Invidious playback page
-        button.addEventListener('click', () => {
-            const invidiousUrl = `https://invidious.example.com/watch?v=${videoId}`;  // Replace 'example.com' with the Invidious instance URL
-            window.location.href = invidiousUrl;
-        });
-
-        return button;
-    }
-
-    function addInvidiousButton() {
-        const videoId = getVideoId();
-        if (!videoId) return;
-
-        const header = document.querySelector('.ytp-right-controls');
-        if (header) {
-            const invidiousButton = createInvidiousButton(videoId);
-            header.appendChild(invidiousButton);
-        } else {
-            console.error('❌ Header not found for Invidious button');
+            return;
         }
     }
 
@@ -159,7 +111,6 @@ ytcfg.set(configs);
             AudioContext.prototype.createBufferSource = function() {
                 const source = originalAudioContext.createBufferSource.call(this);
                 source.stop = function() {
-                    console.log('🔇 Stopped Web Audio API source');
                     originalAudioContext.stop.call(this);
                 };
                 return source;
@@ -174,9 +125,7 @@ ytcfg.set(configs);
             };
     
             contexts.forEach((context) => {
-                context.close().then(() => {
-                    console.log('🔇 Closed Web Audio API context');
-                });
+                context.close().then(() => {});
             });
         }
     
@@ -185,20 +134,15 @@ ytcfg.set(configs);
             window.MediaSource = function() {
                 const mediaSource = new originalMediaSource();
                 mediaSource.endOfStream = function() {
-                    console.log('🔇 Stopped MediaSource stream');
                     originalMediaSource.prototype.endOfStream.call(this);
                 };
                 return mediaSource;
             };
         }
-    
-        console.log('🔇 Stopped all audio and video elements, Web Audio API, and MediaSource');
     }
 
     function init() {
-        console.log('🚀 YouTube player bypass script initialized');
         stopMediaElements();
-        addInvidiousButton();
         window.addEventListener('yt-navigate-finish', () => replacePlayer());
     }
 
