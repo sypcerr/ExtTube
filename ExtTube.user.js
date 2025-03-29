@@ -2,7 +2,7 @@
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
 // @version      1.2.5
-// @description  Replaces YouTube player with custom iframe player and adds a "Watch on Invidious" button.
+// @description  Replaces YouTube player with Invidious player and adds a "Watch on Invidious" button.
 // @author       sypcerr
 // @match        https://*.youtube.com/*
 // @icon         https://cdn-icons-png.flaticon.com/256/1384/1384060.png
@@ -13,98 +13,16 @@
 // @noframes
 // ==/UserScript==
 
-const configs = ytcfg.d();
-configs['WEB_PLAYER_CONTEXT_CONFIGS'] = {};
-ytcfg.set(configs);
-
 (function() {
     'use strict';
 
-    const CONFIG = {
-        PLAYER_SELECTOR: '#player-container[role="complementary"]',
-        RETRY_ATTEMPTS: 3,
-        RETRY_DELAY: 1000,
-        DEFAULT_QUALITY: 'hd1080',
-        IFRAME_STYLES: {
-            width: '100%',
-            height: '100%',
-            borderRadius: '15px',
-            border: 'none'
-        }
-    };
-
-    function getVideoId() {
-        try {
-            const url = new URL(window.location.href);
-            return url.searchParams.get('v');
-        } catch (error) {
-            console.error('❌ Error extracting video ID:', error);
-            return null;
-        }
+    // Function to detect if the user prefers dark mode using matchMedia
+    function isDarkMode() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    // Function to replace the YouTube player with custom iframe
-    function replaceWithCustomIframe(videoId) {
-        const iframe = document.createElement('iframe');
-        const params = new URLSearchParams({
-            autoplay: 1,
-            rel: 0,
-            modestbranding: 1,
-            enablejsapi: 1,
-            origin: window.location.origin,
-            widget_referrer: window.location.href,
-            hl: document.documentElement.lang || 'en',
-            controls: 1,
-            fs: 1,
-            quality: CONFIG.DEFAULT_QUALITY
-        });
-
-        iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
-        iframe.title = 'Custom video player';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-        iframe.referrerpolicy = 'strict-origin-when-cross-origin';
-        iframe.allowFullscreen = true;
-
-        Object.assign(iframe.style, CONFIG.IFRAME_STYLES);
-
-        return iframe;
-    }
-
-    // Function to replace the player with custom iframe in the background
-    async function replacePlayer(attempts = CONFIG.RETRY_ATTEMPTS) {
-        const videoId = getVideoId();
-        if (!videoId) return;
-
-        const findPlayerContainer = () => document.querySelector(CONFIG.PLAYER_SELECTOR);
-        let playerContainer = findPlayerContainer();
-
-        if (!playerContainer && attempts > 0) {
-            console.log(`⏳ Retrying player replacement... (${attempts} attempts left)`);
-            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
-            return replacePlayer(attempts - 1);
-        }
-
-        if (!playerContainer) {
-            console.error('❌ Player container not found after all attempts');
-            return;
-        }
-
-        try {
-            while (playerContainer.firstChild) {
-                playerContainer.firstChild.remove();
-            }
-
-            const iframe = replaceWithCustomIframe(videoId);
-            playerContainer.appendChild(iframe);
-            
-            console.log('✅ Player replaced successfully with custom iframe');
-        } catch (error) {
-            console.error('❌ Error replacing player with custom iframe:', error);
-        }
-    }
-
-    // Function to add the "Watch on Invidious" button
-    function addInvidiousButton() {
+    // Function to add the Invidious buttons
+    function addInvidiousButtons() {
         let existingButtons = document.querySelectorAll('#exttube-invidious-button');
         if (existingButtons.length > 0) return; // Buttons already exist
 
@@ -158,22 +76,66 @@ ytcfg.set(configs);
         container.appendChild(watchButton);
     }
 
-    function isDarkMode() {
-        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Function to get the video ID from the current URL
+    function getVideoId() {
+        try {
+            const url = new URL(window.location.href);
+            return url.searchParams.get('v');
+        } catch (error) {
+            console.error('❌ Error extracting video ID:', error);
+            return null;
+        }
     }
 
-    function stopMediaElements() {
-        const mediaElements = document.querySelectorAll('video, audio');
-        mediaElements.forEach((media) => {
-            media.pause();
-            media.currentTime = 0;
-            media.remove();
+    // Function to create an iframe for the Invidious player
+    function createInvidiousIframe(videoId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://invidious.nerdvpn.de/embed/${videoId}`; // Invidious embed URL
+        iframe.title = 'Invidious video player';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.referrerpolicy = 'strict-origin-when-cross-origin';
+        iframe.allowFullscreen = true;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.borderRadius = '15px'; // Rounded corners
+        iframe.style.border = 'none';
+
+        return iframe;
+    }
+
+    // Function to replace the YouTube player with the Invidious player
+    function replacePlayer() {
+        const videoId = getVideoId();
+        if (!videoId) return;
+
+        const playerContainer = document.querySelector('#player-container');
+        if (playerContainer) {
+            // Clear the existing player
+            while (playerContainer.firstChild) {
+                playerContainer.firstChild.remove();
+            }
+
+            // Create and append the Invidious iframe
+            const iframe = createInvidiousIframe(videoId);
+            playerContainer.appendChild(iframe);
+
+            console.log('✅ Replaced YouTube player with Invidious player');
+        }
+    }
+
+    // Disable the default YouTube player to prevent issues
+    function disableYouTubePlayer() {
+        const videoElements = document.querySelectorAll('video');
+        videoElements.forEach((video) => {
+            video.pause();
+            video.currentTime = 0;
         });
-    
+
+        // Close any Web Audio API contexts that might be open
         if (window.AudioContext || window.webkitAudioContext) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             const originalAudioContext = AudioContext.prototype;
-    
+
             AudioContext.prototype.createBufferSource = function() {
                 const source = originalAudioContext.createBufferSource.call(this);
                 source.stop = function() {
@@ -182,7 +144,7 @@ ytcfg.set(configs);
                 };
                 return source;
             };
-    
+
             const contexts = [];
             const originalCreateContext = AudioContext.prototype.constructor;
             AudioContext.prototype.constructor = function() {
@@ -190,36 +152,26 @@ ytcfg.set(configs);
                 contexts.push(context);
                 return context;
             };
-    
+
             contexts.forEach((context) => {
                 context.close().then(() => {
                     console.log('🔇 Closed Web Audio API context');
                 });
             });
         }
-    
-        if (window.MediaSource) {
-            const originalMediaSource = window.MediaSource;
-            window.MediaSource = function() {
-                const mediaSource = new originalMediaSource();
-                mediaSource.endOfStream = function() {
-                    console.log('🔇 Stopped MediaSource stream');
-                    originalMediaSource.prototype.endOfStream.call(this);
-                };
-                return mediaSource;
-            };
-        }
-    
-        console.log('🔇 Stopped all audio and video elements, Web Audio API, and MediaSource');
+
+        console.log('🔇 Disabled default YouTube player');
     }
 
+    // Initialize the script
     function init() {
-        console.log('🚀 YouTube player bypass script initialized');
-        stopMediaElements();
-        addInvidiousButton(); // Add the Invidious button
-        replacePlayer(); // Replace player with iframe by default
+        console.log('🚀 ExtTube script initialized');
+        disableYouTubePlayer();
+        addInvidiousButtons();
+        replacePlayer(); // Ensure the player is replaced on page load
         window.addEventListener('yt-navigate-finish', () => replacePlayer());
     }
 
+    // Run the initialization
     init();
 })();
