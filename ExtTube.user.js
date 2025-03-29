@@ -2,7 +2,7 @@
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
 // @version      1.2.5
-// @description  Adds Invidious buttons to YouTube videos while keeping the default player and adds a "Use Invidious Player" option.
+// @description  Adds Invidious buttons to YouTube videos and replaces the YouTube player with Invidious player.
 // @author       ExtTube
 // @match        https://*.youtube.com/*
 // @icon         https://cdn-icons-png.flaticon.com/256/1384/1384060.png
@@ -34,12 +34,12 @@
         watchButton.id = 'exttube-invidious-button';
         watchButton.innerText = 'Watch on Invidious';
         watchButton.style.marginRight = '2px'; // Reduced padding between buttons
-        watchButton.style.padding = '6px 14px'; // Slightly smaller button size
+        watchButton.style.padding = '4px 12px'; // Smaller button size
         watchButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         watchButton.style.color = '#0f0f0f'; // Default for light mode
         watchButton.style.border = 'none';
         watchButton.style.cursor = 'pointer';
-        watchButton.style.fontSize = '14px'; // Adjust font size for a smaller button
+        watchButton.style.fontSize = '13px'; // Adjust font size for a smaller button
         watchButton.style.borderRadius = '20px'; // Rounded corners on the outside
         watchButton.style.display = 'inline-flex';
         watchButton.style.alignItems = 'center';
@@ -50,12 +50,12 @@
         let playerButton = document.createElement('button');
         playerButton.id = 'exttube-invidious-player-button';
         playerButton.innerText = 'Use Invidious Player';
-        playerButton.style.padding = '6px 14px'; // Slightly smaller button size
+        playerButton.style.padding = '4px 12px'; // Smaller button size
         playerButton.style.backgroundColor = '#f1f1f1'; // Default for light mode
         playerButton.style.color = '#0f0f0f'; // Default for light mode
         playerButton.style.border = 'none';
         playerButton.style.cursor = 'pointer';
-        playerButton.style.fontSize = '14px'; // Adjust font size for a smaller button
+        playerButton.style.fontSize = '13px'; // Adjust font size for a smaller button
         playerButton.style.borderRadius = '20px'; // Rounded corners on the outside
         playerButton.style.display = 'inline-flex';
         playerButton.style.alignItems = 'center';
@@ -83,14 +83,15 @@
             let videoId = new URL(window.location.href).searchParams.get('v');
             if (videoId) {
                 // Replace the YouTube player with the Invidious player
-                let iframe = document.createElement('iframe');
+                const iframe = document.createElement('iframe');
                 iframe.src = `https://invidious.nerdvpn.de/embed/${videoId}`; // Embed Invidious player
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
+                iframe.style.borderRadius = '15px'; // Rounded corners on the iframe
                 iframe.style.border = 'none';
 
                 // Replace the YouTube player with the Invidious iframe
-                let playerContainer = document.querySelector('.html5-video-player');
+                let playerContainer = document.querySelector('#player-container');
                 if (playerContainer) {
                     playerContainer.innerHTML = ''; // Clear the current YouTube player
                     playerContainer.appendChild(iframe); // Embed the Invidious player
