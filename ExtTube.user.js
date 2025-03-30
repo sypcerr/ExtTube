@@ -6,7 +6,7 @@
 // @author       sypcerr
 // @match        https://*.youtube.com/*
 // @icon         https://cdn-icons-png.flaticon.com/256/1384/1384060.png
-// @run-at       document-idle
+// @run-at       document-start
 // @updateURL    https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
 // @downloadURL  https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
 // @license      MIT
