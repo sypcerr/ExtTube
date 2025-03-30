@@ -4,14 +4,14 @@
 // @version      1.2.5
 // @description  Replaces YouTube player with Invidious player and adds a "Watch on Invidious" button.
 // @author       sypcerr
-// @match        https://*.youtube.com/*
+// @match        https://*.youtube.com/watch?*
 // @icon         https://cdn-icons-png.flaticon.com/256/1384/1384060.png
 // @run-at       document-start
 // @updateURL    https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
 // @downloadURL  https://github.com/sypcerr/ExtTube/raw/refs/heads/main/ExtTube.user.js
 // @license      MIT
-// @noframes
 // ==/UserScript==
+
 
 const configs = ytcfg.d();
 configs['WEB_PLAYER_CONTEXT_CONFIGS'] = {};
@@ -76,11 +76,13 @@ ytcfg.set(configs);
         let playerContainer = findPlayerContainer();
 
         if (!playerContainer && attempts > 0) {
+            console.log(`⏳ Retrying player replacement... (${attempts} attempts left)`);
             await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
             return replacePlayer(attempts - 1);
         }
 
         if (!playerContainer) {
+            console.error('❌ Player container not found after all attempts');
             return;
         }
 
@@ -91,8 +93,10 @@ ytcfg.set(configs);
 
             const iframe = createEnhancedIframe(videoId);
             playerContainer.appendChild(iframe);
+            
+            console.log('✅ Player replaced successfully');
         } catch (error) {
-            return;
+            console.error('❌ Error replacing player:', error);
         }
     }
 
@@ -111,6 +115,7 @@ ytcfg.set(configs);
             AudioContext.prototype.createBufferSource = function() {
                 const source = originalAudioContext.createBufferSource.call(this);
                 source.stop = function() {
+                    console.log('🔇 Stopped Web Audio API source');
                     originalAudioContext.stop.call(this);
                 };
                 return source;
@@ -125,7 +130,8 @@ ytcfg.set(configs);
             };
     
             contexts.forEach((context) => {
-                context.close().then(() => {});
+                context.close().then(() => {
+                });
             });
         }
     
@@ -139,6 +145,8 @@ ytcfg.set(configs);
                 return mediaSource;
             };
         }
+    
+        console.log('🔇 Stopped all audio and video elements, Web Audio API, and MediaSource');
     }
 
     function init() {
