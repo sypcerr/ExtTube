@@ -1,6 +1,5 @@
 # ExtTube
 
-
 **ExtTube** is a Tampermonkey userscript that **replaces the default YouTube player** with an enhanced player. This allows users to use a diffrent YouTube Player if the YouTube site has problems loading Videos (which is the reason why I made this).
 
 ## Features
@@ -20,7 +19,7 @@
 - Clicking the button opens the current video in Invidious in a new tab.
 
 ## Updates
-- **Version 1.1**:  
+- **Version 1.2**:  
  -Fixed all Bugs.
 
 ## License
