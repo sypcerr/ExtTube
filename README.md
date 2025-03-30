@@ -1,6 +1,5 @@
 # ExtTube
 
-![image](https://github.com/user-attachments/assets/6df1aae0-dff8-4e81-91bb-e6967d28623c)
 
 **ExtTube** is a Tampermonkey userscript that **replaces the default YouTube player** with an enhanced player. This allows users to use a diffrent YouTube Player if the YouTube site has problems loading Videos (which is the reason why I made this).
 
