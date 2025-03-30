@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ExtTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2.5
+// @version      1.2
 // @description  Replaces YouTube player with Invidious player and adds a "Watch on Invidious" button.
 // @author       sypcerr
 // @match        https://*.youtube.com/watch?*
