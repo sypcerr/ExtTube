@@ -2,12 +2,12 @@
 
 ![image](https://github.com/user-attachments/assets/6df1aae0-dff8-4e81-91bb-e6967d28623c)
 
-ExtTube is a Tampermonkey userscript that adds a **Watch on Invidious** button to YouTube videos while keeping the default YouTube player. This allows users to easily open videos on an Invidious instance for a more privacy-friendly experience, or if the YouTube site has problems loading videos (which is the reason why I made this).
+**ExtTube** is a Tampermonkey userscript that **replaces the default YouTube player** with an enhanced player. This allows users to use a diffrent YouTube Player if the YouTube site has problems loading Videos (which is the reason why I made this).
 
 ## Features
-✅ Adds a **Watch on Invidious** button below YouTube videos  
-✅ Keeps the default YouTube player  
-✅ Lightweight and fast  
+- ✅ Replaces the default YouTube player with a **privacy-friendly Invidious player**  
+- ✅ Keeps the YouTube experience with **all functionalities intact**  
+- ✅ Lightweight and fast 
 
 ## Installation
 1. Install [Tampermonkey](https://www.tampermonkey.net/) if you haven't already.
@@ -21,9 +21,8 @@ ExtTube is a Tampermonkey userscript that adds a **Watch on Invidious** button t
 - Clicking the button opens the current video in Invidious in a new tab.
 
 ## Updates
-Updated to Version 1.1
-Now the buttons appearence changes based on your YouTube Settings (Dark/Light Mode)
+- **Version 1.1**:  
+ -Fixed all Bugs.
 
 ## License
 This project is open-source under the MIT License.
-
