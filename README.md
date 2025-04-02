@@ -3,8 +3,8 @@
 **ExtTube** is a Tampermonkey userscript that **replaces the default YouTube player** with an enhanced player. This allows users to use a diffrent YouTube Player if the YouTube site has problems loading Videos (which is the reason why I made this).
 
 ## Features
-- ✅ Replaces the default YouTube player with a **privacy-friendly Invidious player**  
-- ✅ Keeps the YouTube experience with **all functionalities intact**  
+- ✅ Replaces the default YouTube player with a **privacy-friendly player**  
+- ✅ Keeps the YouTube experience with **all functionalities intact**
 - ✅ Lightweight and fast 
 
 ## Installation
