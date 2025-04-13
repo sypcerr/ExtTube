@@ -19,8 +19,9 @@
 - Clicking the button opens the current video in Invidious in a new tab.
 
 ## Updates
-- **Version 1.2**:  
- -Fixed all Bugs.
+- **Version 1.3**:  
+ -YouTube fixed my script, now it works again just as before - but better:
+     --Now Added hold click or space for 2x speed just like the regular YouYube Player
 
 ## License
 This project is open-source under the MIT License.
